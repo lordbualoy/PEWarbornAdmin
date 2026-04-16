@@ -15,7 +15,7 @@ const playerSubView = defineAsyncComponent(() => import('@/modules/Player').then
 const headerColumns: HeaderColumn[] = [
     { key: 'playerId', label: 'Player Id' },
     { key: 'name', label: 'Name' },
-    { key: 'isOnline', label: 'Is Online' },
+    { key: 'lastOnline', label: 'Last Online' },
 ]
 const { filter, data, initialize, applyFilter } = playersViewManager
 

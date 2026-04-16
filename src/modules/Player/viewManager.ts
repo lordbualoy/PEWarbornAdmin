@@ -35,7 +35,11 @@ export function usePlayersViewManager() {
         filter,
         data: readonly(filteredData),
         async initialize(){
-            data.value = await dataProxy.getPlayers()
+            const players = await dataProxy.getPlayers()
+            data.value = players.map(x => ({
+                ...x,
+                lastOnline: x.isOnline ? 'Online' : x.lastOnline,
+            }))
             await applyFilter()
         },
         applyFilter,

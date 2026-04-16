@@ -34,6 +34,7 @@ export interface GetPlayersResponseItem {
     foodBar: number
     isPoisoned: boolean
     isBannedUntil: string | null
+    lastOnline: string
 }
 
 export interface SetPlayerMoneyParams {
@@ -92,6 +93,7 @@ export function usePlayerDataProxyDataMocking(): PlayerDataProxy {
             foodBar: 100,
             isPoisoned: false,
             isBannedUntil: null,
+            lastOnline: '2020-01-01T00:00:00+00:00',
         })
     }
 
