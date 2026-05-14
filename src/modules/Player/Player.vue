@@ -88,7 +88,7 @@ initialize()
                         <label>Money</label>
                         <Value class="vertical-value">
                             <input type="number" :value="editingMoney">
-                            <button @click="setPlayerMoney" :disabled="!playerData.isOnline">Set Money</button>
+                            <button @click="setPlayerMoney">Set Money</button>
                         </Value>
                     </Field>
                     <Field>
