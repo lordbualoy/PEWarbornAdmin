@@ -87,7 +87,7 @@ initialize()
                     <Field>
                         <label>Money</label>
                         <Value class="vertical-value">
-                            <input type="number" :value="editingMoney">
+                            <input type="number" v-model="editingMoney">
                             <button @click="setPlayerMoney">Set Money</button>
                         </Value>
                     </Field>

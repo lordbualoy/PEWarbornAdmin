@@ -109,6 +109,7 @@ export function usePlayerViewManager(playerId: Ref<string>) {
         },
         async setPlayerMoney(){
             await playerDataProxy.setPlayerMoney({ playerId: playerId.value, originalMoney: playerData.value.money, money: editingMoney.value })
+            await loadData()
         },
         async setPlayerFaction(){
             await playerDataProxy.setPlayerFaction({ playerId: playerId.value, factionIndex: editingFactionIndex.value! })
