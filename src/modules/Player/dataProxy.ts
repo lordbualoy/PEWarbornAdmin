@@ -23,6 +23,7 @@ export interface GetPlayersResponseItem {
     armors: any[]
     mount: string | null
     money: number
+    honor: number
     bankMoney: number
     personalChests: any[]
     hp: number
@@ -43,6 +44,11 @@ export interface SetPlayerMoneyParams {
     money: number
 }
 
+export interface SetPlayerHonorParams {
+    playerId: string
+    honor: number
+}
+
 export interface SetPlayerFactionParams {
     playerId: string
     factionIndex: number
@@ -56,6 +62,7 @@ export interface PlayerDataProxy {
     permanentBanPlayer(params: GetPlayerParams): Promise<void>
     unbanPlayer(params: GetPlayerParams): Promise<void>
     setPlayerMoney(params: SetPlayerMoneyParams): Promise<void>
+    setPlayerHonor(params: SetPlayerHonorParams): Promise<void>
     setPlayerFaction(params: SetPlayerFactionParams): Promise<void>
 }
 
@@ -82,6 +89,7 @@ export function usePlayerDataProxyDataMocking(): PlayerDataProxy {
             armors: [],
             mount: null,
             money: 100,
+            honor: 0,
             bankMoney: 50,
             personalChests: [],
             hp: 10,
@@ -121,6 +129,9 @@ export function usePlayerDataProxyDataMocking(): PlayerDataProxy {
             await setTimeoutAsync(1000)
         },
         async setPlayerMoney(params): Promise<void> {
+            await setTimeoutAsync(1000)
+        },
+        async setPlayerHonor(params): Promise<void> {
             await setTimeoutAsync(1000)
         },
         async setPlayerFaction(params): Promise<void> {
@@ -174,6 +185,12 @@ export function usePlayerDataProxyApi(): PlayerDataProxy {
                 playerId: params.playerId,
                 gold: diff,
             }, '/compensateplayer').res()
+        },
+        async setPlayerHonor(params): Promise<void> {
+            return httpAgentContainer.instance.post({
+                playerId: params.playerId,
+                honor: params.honor,
+            }, '/setplayerhonor').res()
         },
         async setPlayerFaction(params): Promise<void> {
             return httpAgentContainer.instance.post({

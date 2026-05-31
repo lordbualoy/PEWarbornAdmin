@@ -55,6 +55,7 @@ export function usePlayerViewManager(playerId: Ref<string>) {
     const playerData = ref<GetPlayersResponseItem>({})
     const factionData = ref<GetFactionsResponseItem[]>()
     const editingMoney = ref<number>(0)
+    const editingHonor = ref<number>(0)
     const editingFactionIndex = ref<number>()
 
     async function loadData(){
@@ -70,6 +71,7 @@ export function usePlayerViewManager(playerId: Ref<string>) {
         playerData.value = player
         factionData.value = faction
         editingMoney.value = player.money
+        editingHonor.value = player.honor
         editingFactionIndex.value = player.factionIndex
     }
     watch(playerId, () => {
@@ -87,6 +89,7 @@ export function usePlayerViewManager(playerId: Ref<string>) {
                 keys.push('Chest')
         }),
         editingMoney,
+        editingHonor,
         editingFactionIndex,
         factionData: readonly(factionData),
         async initialize(){
@@ -109,6 +112,10 @@ export function usePlayerViewManager(playerId: Ref<string>) {
         },
         async setPlayerMoney(){
             await playerDataProxy.setPlayerMoney({ playerId: playerId.value, originalMoney: playerData.value.money, money: editingMoney.value })
+            await loadData()
+        },
+        async setPlayerHonor(){
+            await playerDataProxy.setPlayerHonor({ playerId: playerId.value, honor: editingHonor.value })
             await loadData()
         },
         async setPlayerFaction(){

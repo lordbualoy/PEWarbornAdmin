@@ -20,6 +20,7 @@ const {
     playerData,
     keys,
     editingMoney,
+    editingHonor,
     editingFactionIndex,
     factionData,
     initialize,
@@ -28,6 +29,7 @@ const {
     permanentBanPlayer,
     unbanPlayer,
     setPlayerMoney,
+    setPlayerHonor,
     setPlayerFaction,
 } = playerViewManager
 
@@ -89,6 +91,13 @@ initialize()
                         <Value class="vertical-value">
                             <input type="number" v-model="editingMoney">
                             <button @click="setPlayerMoney">Set Money</button>
+                        </Value>
+                    </Field>
+                    <Field>
+                        <label>Honor</label>
+                        <Value class="vertical-value">
+                            <input type="number" v-model="editingHonor">
+                            <button @click="setPlayerHonor">Set Honor</button>
                         </Value>
                     </Field>
                     <Field>
