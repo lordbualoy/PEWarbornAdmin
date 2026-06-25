@@ -1,6 +1,8 @@
 import { dataMocking } from '@/constants'
 import { setTimeoutAsync } from '@/utilities'
 import { httpAgentContainer } from '@/modules/Http'
+import { from } from 'ix/iterable';
+import { orderBy, orderByDescending } from 'ix/iterable/operators';
 
 export interface GetFactionParams {
     factionIndex: number
@@ -90,10 +92,15 @@ export function useFactionDataProxyDataMocking(): FactionDataProxy {
 export function useFactionDataProxyApi(): FactionDataProxy {
     return {
         async getFaction(params): Promise<GetFactionsResponseItem> {
-            return httpAgentContainer.instance.get(`/faction?factionIndex=${params.factionIndex}`).json()
+            const faction = await httpAgentContainer.instance.get(`/faction?factionIndex=${params.factionIndex}`).json<GetFactionsResponseItem>()
+            faction.playerList = [...from(faction.playerList).pipe(orderByDescending(x => x.isOnline))]
+            faction.relations = [...from(faction.relations).pipe(orderBy(x => x.factionIndex))]
+            faction.castles = [...from(faction.castles).pipe(orderBy(x => x.castleIndex))]
+            return faction
         },
         async getFactions(): Promise<GetFactionsResponseItem[]> {
-            return httpAgentContainer.instance.get('/factions').json()
+            const factions = await httpAgentContainer.instance.get('/factions').json<GetFactionsResponseItem[]>()
+            return [...from(factions).pipe(orderBy(x => x.factionIndex))]
         },
         async setFactionLord(params) {
             return httpAgentContainer.instance.post({

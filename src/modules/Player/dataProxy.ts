@@ -2,6 +2,8 @@ import { dataMocking } from '@/constants'
 import { setTimeoutAsync } from '@/utilities'
 import { httpAgentContainer } from '@/modules/Http';
 import { DateTime } from 'luxon';
+import { from } from 'ix/iterable';
+import { orderByDescending } from 'ix/iterable/operators';
 
 export interface GetPlayerParams {
     playerId: string
@@ -146,7 +148,8 @@ export function usePlayerDataProxyApi(): PlayerDataProxy {
             return httpAgentContainer.instance.get(`/player?playerId=${params.playerId}`).json()
         },
         async getPlayers(): Promise<GetPlayersResponseItem[]> {
-            return httpAgentContainer.instance.get('/players').json()
+            const players = await httpAgentContainer.instance.get('/players').json<GetPlayersResponseItem[]>()
+            return [...from(players).pipe(orderByDescending(x => x.lastOnline))]
         },
         async kickPlayer(params): Promise<void> {
             return httpAgentContainer.instance.post({

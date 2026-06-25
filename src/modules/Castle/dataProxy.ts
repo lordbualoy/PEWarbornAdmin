@@ -1,6 +1,8 @@
 import { dataMocking } from '@/constants'
 import { setTimeoutAsync } from '@/utilities'
 import { httpAgentContainer } from '@/modules/Http';
+import { from } from 'ix/iterable';
+import { orderBy } from 'ix/iterable/operators';
 
 export interface GetCastleParams {
     castleIndex: number
@@ -69,7 +71,8 @@ export function useCastleDataProxyApi(): CastleDataProxy {
             return httpAgentContainer.instance.get(`/castle?castleIndex=${params.castleIndex}`).json()
         },
         async getCastles(): Promise<GetCastlesResponseItem[]> {
-            return httpAgentContainer.instance.get('/castles').json()
+            const castles = await httpAgentContainer.instance.get('/castles').json<GetCastlesResponseItem[]>()
+            return [...from(castles).pipe(orderBy(x => x.castleIndex))]
         },
         async transferCastle(params) {
             return httpAgentContainer.instance.post({
